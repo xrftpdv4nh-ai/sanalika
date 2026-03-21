@@ -4,9 +4,14 @@
   padding: 0;
 }
 
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
 body {
   font-family: Arial, sans-serif;
-  background: #121826;
+  background: #0b1220;
   color: #fff;
   overflow: hidden;
 }
@@ -21,51 +26,62 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: #0f172a;
+  background: #10233f;
+  min-height: 0;
 }
 
 .topbar {
   height: 60px;
+  min-height: 60px;
   padding: 0 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #111827;
+  background: linear-gradient(180deg, #101b31, #0b1528);
 }
 
 .room-title {
   font-size: 20px;
   font-weight: bold;
+  color: #f8fafc;
 }
 
 .hint {
   font-size: 14px;
-  opacity: 0.8;
+  opacity: 0.82;
+  color: #cbd5e1;
 }
 
 #gameCanvas {
   width: 100%;
   height: calc(100vh - 60px);
-  background: linear-gradient(180deg, #1e293b, #0f172a);
+  background: linear-gradient(180deg, #1d4f8d 0%, #163f74 45%, #123764 100%);
   display: block;
+  touch-action: none;
 }
 
 .chat-panel {
   width: 360px;
-  background: #111827;
-  border-left: 1px solid rgba(255,255,255,0.08);
+  min-width: 320px;
+  background: linear-gradient(180deg, #081224, #09172b);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .chat-header {
   height: 60px;
+  min-height: 60px;
   display: flex;
   align-items: center;
   padding: 0 18px;
   font-weight: bold;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  font-size: 18px;
+  color: #f8fafc;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .chat-messages {
@@ -75,44 +91,64 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  background: #081225;
+  scrollbar-width: thin;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
 }
 
 .msg {
-  background: #1f2937;
-  border-radius: 12px;
-  padding: 10px 12px;
-  line-height: 1.4;
+  background: #1e2b44;
+  border-radius: 18px;
+  padding: 12px 14px;
+  line-height: 1.5;
   word-break: break-word;
+  color: #f8fafc;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
 }
 
 .msg .meta {
   font-size: 12px;
-  opacity: 0.7;
-  margin-bottom: 4px;
+  opacity: 0.72;
+  margin-bottom: 6px;
+  color: #cbd5e1;
 }
 
 .msg.system {
-  background: #243043;
-  border: 1px solid rgba(255,255,255,0.08);
-  color: #cbd5e1;
+  background: #243654;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #dbeafe;
 }
 
 .chat-form {
   display: flex;
   gap: 10px;
   padding: 14px;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.12);
 }
 
 .chat-form input {
   flex: 1;
-  height: 46px;
+  height: 50px;
   border: none;
   outline: none;
-  border-radius: 12px;
-  padding: 0 14px;
-  background: #1f2937;
+  border-radius: 16px;
+  padding: 0 16px;
+  background: #1b2740;
   color: #fff;
+  font-size: 16px;
+}
+
+.chat-form input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .chat-form button,
@@ -120,25 +156,34 @@ body {
   border: none;
   outline: none;
   cursor: pointer;
-  border-radius: 12px;
-  padding: 0 18px;
-  background: #3b82f6;
+  border-radius: 16px;
+  padding: 0 20px;
+  background: linear-gradient(180deg, #4d8df7, #3b82f6);
   color: white;
   font-weight: bold;
+  transition: 0.2s ease;
+}
+
+.chat-form button:hover,
+.modal-box button:hover {
+  transform: translateY(-1px);
 }
 
 .chat-form button {
-  height: 46px;
+  height: 50px;
+  min-width: 110px;
+  font-size: 16px;
 }
 
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.65);
+  background: rgba(0, 0, 0, 0.68);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 999;
+  padding: 20px;
 }
 
 .modal.hidden {
@@ -146,54 +191,152 @@ body {
 }
 
 .modal-box {
-  width: 360px;
-  background: #111827;
-  border-radius: 18px;
+  width: 100%;
+  max-width: 380px;
+  background: linear-gradient(180deg, #111827, #0f172a);
+  border-radius: 22px;
   padding: 24px;
   text-align: center;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
 }
 
 .modal-box h1 {
   margin-bottom: 10px;
+  font-size: 28px;
+  color: #f8fafc;
 }
 
 .modal-box p {
   margin-bottom: 16px;
-  opacity: 0.8;
+  opacity: 0.82;
+  color: #cbd5e1;
 }
 
 .modal-box input {
   width: 100%;
-  height: 48px;
+  height: 50px;
   border: none;
   outline: none;
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 0 14px;
   margin-bottom: 12px;
   background: #1f2937;
   color: #fff;
+  font-size: 16px;
+}
+
+.modal-box input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .modal-box button {
   width: 100%;
-  height: 48px;
+  height: 50px;
+  font-size: 16px;
 }
 
 @media (max-width: 900px) {
+  body {
+    overflow: hidden;
+  }
+
   .app {
     flex-direction: column;
+    height: 100dvh;
+  }
+
+  .game-panel {
+    height: 60dvh;
+    min-height: 60dvh;
   }
 
   .chat-panel {
     width: 100%;
-    height: 38vh;
-  }
-
-  .game-panel {
-    height: 62vh;
+    min-width: 100%;
+    height: 40dvh;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   #gameCanvas {
-    height: calc(62vh - 60px);
+    height: calc(60dvh - 60px);
+  }
+
+  .room-title {
+    font-size: 18px;
+  }
+
+  .hint {
+    font-size: 12px;
+  }
+
+  .chat-header {
+    height: 56px;
+    min-height: 56px;
+    font-size: 17px;
+  }
+
+  .chat-form {
+    padding: 12px;
+  }
+
+  .chat-form input {
+    height: 48px;
+    font-size: 16px;
+  }
+
+  .chat-form button {
+    height: 48px;
+    min-width: 96px;
+  }
+}
+
+@media (max-width: 600px) {
+  .topbar {
+    padding: 0 14px;
+  }
+
+  .room-title {
+    font-size: 16px;
+  }
+
+  .hint {
+    font-size: 11px;
+    text-align: right;
+    max-width: 40%;
+  }
+
+  .chat-messages {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .msg {
+    border-radius: 16px;
+    padding: 11px 12px;
+    font-size: 15px;
+  }
+
+  .chat-form {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .chat-form input {
+    padding: 0 14px;
+  }
+
+  .chat-form button {
+    min-width: 90px;
+    padding: 0 14px;
+  }
+
+  .modal-box {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .modal-box h1 {
+    font-size: 24px;
   }
 }
