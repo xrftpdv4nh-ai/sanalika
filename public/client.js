@@ -42,6 +42,132 @@ function addMessage(html, className = "") {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function drawSpeechBubble(text, x, y) {
+  if (!text) return;
+
+  ctx.save();
+  ctx.font = "14px Arial";
+  const safeText = text.length > 24 ? text.slice(0, 24) + "..." : text;
+  const textWidth = ctx.measureText(safeText).width;
+  const paddingX = 12;
+  const bubbleWidth = textWidth + paddingX * 2;
+  const bubbleHeight = 34;
+  const bubbleX = x - bubbleWidth / 2;
+  const bubbleY = y - 88;
+
+  ctx.fillStyle = "rgba(255,255,255,0.95)";
+  roundRect(bubbleX, bubbleY, bubbleWidth, bubbleHeight, 14);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(x - 8, bubbleY + bubbleHeight - 2);
+  ctx.lineTo(x, bubbleY + bubbleHeight + 8);
+  ctx.lineTo(x + 8, bubbleY + bubbleHeight - 2);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.fillStyle = "#111827";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(safeText, x, bubbleY + bubbleHeight / 2 + 1);
+  ctx.restore();
+}
+
+function drawCharacter(player) {
+  const x = player.x;
+  const y = player.y;
+  const dir = player.direction === "left" ? -1 : 1;
+  const look = player.look || {};
+  const skin = look.skin || "#f2c7a5";
+  const hair = look.hair || "#2b2b2b";
+  const shirt = look.shirt || "#60a5fa";
+  const pants = look.pants || "#1f2937";
+
+  ctx.save();
+  ctx.translate(x, y);
+
+  if (dir === -1) {
+    ctx.scale(-1, 1);
+  }
+
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = "rgba(0,0,0,0.18)";
+
+  ctx.fillStyle = pants;
+  ctx.fillRect(-10, 16, 8, 18);
+  ctx.fillRect(2, 16, 8, 18);
+
+  ctx.fillStyle = "#111827";
+  ctx.fillRect(-11, 33, 10, 4);
+  ctx.fillRect(1, 33, 10, 4);
+
+  ctx.fillStyle = shirt;
+  roundRect(-16, -6, 32, 26, 8);
+  ctx.fill();
+
+  ctx.fillStyle = skin;
+  ctx.fillRect(-20, -2, 6, 18);
+  ctx.fillRect(14, -2, 6, 18);
+
+  ctx.beginPath();
+  ctx.fillStyle = skin;
+  ctx.arc(0, -22, 15, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.fillStyle = hair;
+  ctx.arc(0, -27, 15, Math.PI, Math.PI * 2);
+  ctx.fill();
+  ctx.fillRect(-15, -27, 30, 8);
+
+  ctx.fillStyle = "#1f2937";
+  ctx.beginPath();
+  ctx.arc(-5, -23, 1.4, 0, Math.PI * 2);
+  ctx.arc(5, -23, 1.4, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.strokeStyle = "#7c2d12";
+  ctx.lineWidth = 1.5;
+  ctx.arc(0, -18, 4, 0.2, Math.PI - 0.2);
+  ctx.stroke();
+
+  if (currentPlayer && player.id === currentPlayer.id) {
+    ctx.beginPath();
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 2;
+    ctx.arc(0, 5, 28, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
+  ctx.restore();
+
+  ctx.save();
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "14px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(player.name, x, y - 48);
+  ctx.restore();
+
+  if (player.bubbleText && player.bubbleUntil && Date.now() < player.bubbleUntil) {
+    drawSpeechBubble(player.bubbleText, x, y);
+  }
+}
+
 function drawRoom() {
   const w = canvas.getBoundingClientRect().width;
   const h = canvas.getBoundingClientRect().height;
@@ -54,43 +180,31 @@ function drawRoom() {
   ctx.save();
   ctx.scale(scaleX, scaleY);
 
-  ctx.fillStyle = "#22304a";
+  ctx.fillStyle = "#173f73";
   ctx.fillRect(0, 0, room.width, room.height);
 
-  ctx.fillStyle = "#2d3d5a";
+  ctx.fillStyle = "rgba(255,255,255,0.05)";
   for (let x = 0; x < room.width; x += 80) {
     for (let y = 0; y < room.height; y += 80) {
       ctx.fillRect(x + 2, y + 2, 2, 2);
     }
   }
 
-  ctx.fillStyle = "#334155";
-  ctx.fillRect(100, 100, 220, 60);
-  ctx.fillRect(480, 240, 260, 60);
-  ctx.fillRect(860, 140, 200, 60);
+  ctx.fillStyle = "rgba(255,255,255,0.06)";
+  ctx.fillRect(100, 80, 220, 90);
+  ctx.fillRect(480, 240, 260, 100);
+  ctx.fillRect(860, 140, 200, 80);
 
-  ctx.fillStyle = "#64748b";
+  ctx.fillStyle = "rgba(0,0,0,0.15)";
+  ctx.fillRect(0, room.height - 65, room.width, 65);
+
+  ctx.fillStyle = "rgba(255,255,255,0.8)";
   ctx.font = "20px Arial";
-  ctx.fillText("Stage 1 Room", 20, 30);
+  ctx.textAlign = "left";
+  ctx.fillText("Social Room - Stage 1", 20, 32);
 
   Object.values(players).forEach((player) => {
-    ctx.beginPath();
-    ctx.fillStyle = player.color || "#60a5fa";
-    ctx.arc(player.x, player.y, 18, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "14px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText(player.name, player.x, player.y - 28);
-
-    if (currentPlayer && player.id === currentPlayer.id) {
-      ctx.strokeStyle = "#ffffff";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.arc(player.x, player.y, 24, 0, Math.PI * 2);
-      ctx.stroke();
-    }
+    drawCharacter(player);
   });
 
   ctx.restore();
@@ -170,10 +284,23 @@ socket.on("playerMoved", (data) => {
   if (!players[data.id]) return;
   players[data.id].x = data.x;
   players[data.id].y = data.y;
+  if (data.direction) players[data.id].direction = data.direction;
 
   if (currentPlayer && data.id === currentPlayer.id) {
     currentPlayer.x = data.x;
     currentPlayer.y = data.y;
+    currentPlayer.direction = data.direction;
+  }
+});
+
+socket.on("playerBubble", (data) => {
+  if (!players[data.id]) return;
+  players[data.id].bubbleText = data.text;
+  players[data.id].bubbleUntil = data.bubbleUntil;
+
+  if (currentPlayer && data.id === currentPlayer.id) {
+    currentPlayer.bubbleText = data.text;
+    currentPlayer.bubbleUntil = data.bubbleUntil;
   }
 });
 
