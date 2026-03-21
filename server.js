@@ -36,7 +36,15 @@ io.on("connection", (socket) => {
       name: safeName,
       x: Math.floor(Math.random() * (ROOM_WIDTH - 100)) + 50,
       y: Math.floor(Math.random() * (ROOM_HEIGHT - 100)) + 50,
-      color: `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`
+      direction: "right",
+      look: {
+        skin: "#f2c7a5",
+        hair: "#2b2b2b",
+        shirt: `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`,
+        pants: "#1f2937"
+      },
+      bubbleText: "",
+      bubbleUntil: 0
     };
 
     socket.emit("currentPlayer", {
@@ -49,9 +57,7 @@ io.on("connection", (socket) => {
     });
 
     socket.emit("allPlayers", players);
-
     socket.broadcast.emit("playerJoined", players[socket.id]);
-
     io.emit("systemMessage", `${safeName} joined the room`);
   });
 
@@ -67,13 +73,17 @@ io.on("connection", (socket) => {
     if (data.up) dy -= PLAYER_SPEED;
     if (data.down) dy += PLAYER_SPEED;
 
-    player.x = clamp(player.x + dx, 20, ROOM_WIDTH - 20);
-    player.y = clamp(player.y + dy, 20, ROOM_HEIGHT - 20);
+    if (dx < 0) player.direction = "left";
+    if (dx > 0) player.direction = "right";
+
+    player.x = clamp(player.x + dx, 40, ROOM_WIDTH - 40);
+    player.y = clamp(player.y + dy, 70, ROOM_HEIGHT - 30);
 
     io.emit("playerMoved", {
       id: player.id,
       x: player.x,
-      y: player.y
+      y: player.y,
+      direction: player.direction
     });
   });
 
@@ -82,7 +92,7 @@ io.on("connection", (socket) => {
     if (!player) return;
 
     const safeText =
-      typeof text === "string" ? text.trim().slice(0, 200) : "";
+      typeof text === "string" ? text.trim().slice(0, 120) : "";
 
     if (!safeText) return;
 
@@ -97,12 +107,17 @@ io.on("connection", (socket) => {
     };
 
     messages.push(msg);
+    if (messages.length > 50) messages.shift();
 
-    if (messages.length > 50) {
-      messages.shift();
-    }
+    player.bubbleText = safeText;
+    player.bubbleUntil = Date.now() + 5000;
 
     io.emit("chatMessage", msg);
+    io.emit("playerBubble", {
+      id: player.id,
+      text: safeText,
+      bubbleUntil: player.bubbleUntil
+    });
   });
 
   socket.on("disconnect", () => {
