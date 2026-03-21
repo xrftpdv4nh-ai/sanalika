@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RoomVerse - Stage 1</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="nameModal" class="modal">
+    <div class="modal-box">
+      <h1>RoomVerse</h1>
+      <p>Enter your name to join the room</p>
+      <input id="nameInput" type="text" maxlength="20" placeholder="Your name" />
+      <button id="joinBtn">Join</button>
+    </div>
+  </div>
+
+  <div class="app">
+    <div class="game-panel">
+      <div class="topbar">
+        <div class="room-title">Public Room</div>
+        <div class="hint">Move: WASD / Arrow Keys</div>
+      </div>
+      <canvas id="gameCanvas" width="1200" height="700"></canvas>
+    </div>
+
+    <div class="chat-panel">
+      <div class="chat-header">Room Chat</div>
+      <div id="chatMessages" class="chat-messages"></div>
+
+      <form id="chatForm" class="chat-form">
+        <input
+          id="chatInput"
+          type="text"
+          maxlength="200"
+          placeholder="Write a message..."
+          autocomplete="off"
+        />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>
