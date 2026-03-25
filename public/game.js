@@ -1,15 +1,18 @@
 const game = document.getElementById("game");
 const player = document.getElementById("player");
+const playerImg = player.querySelector("img");
 
 let playerX = 300;
-let playerY = 500;
+let playerY = 520;
 
 let targetX = playerX;
 let targetY = playerY;
 
+const speed = 2.2;
+
 function setPlayerPosition() {
-  player.style.left = playerX + "px";
-  player.style.top = playerY + "px";
+  player.style.left = `${playerX}px`;
+  player.style.top = `${playerY}px`;
 }
 
 setPlayerPosition();
@@ -26,12 +29,23 @@ function update() {
   const dy = targetY - playerY;
   const distance = Math.sqrt(dx * dx + dy * dy);
 
-  const speed = 4;
+  if (distance > 2) {
+    const moveX = (dx / distance) * speed;
+    const moveY = (dy / distance) * speed;
 
-  if (distance > 1) {
-    playerX += (dx / distance) * speed;
-    playerY += (dy / distance) * speed;
+    playerX += moveX;
+    playerY += moveY;
+
+    if (moveX > 0.2) {
+      playerImg.style.transform = "scaleX(1)";
+    } else if (moveX < -0.2) {
+      playerImg.style.transform = "scaleX(-1)";
+    }
+
+    player.classList.add("walking");
     setPlayerPosition();
+  } else {
+    player.classList.remove("walking");
   }
 
   requestAnimationFrame(update);
