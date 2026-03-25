@@ -1,0 +1,41 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #111;
+  overflow: auto;
+  font-family: Arial, sans-serif;
+}
+
+#game {
+  position: relative;
+  width: 1280px;
+  margin: 20px auto;
+}
+
+#map {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#player {
+  position: absolute;
+  left: 300px;
+  top: 500px;
+  width: 56px;
+  height: 92px;
+  transform: translate(-50%, -100%);
+  transition: left 0.08s linear, top 0.08s linear;
+  pointer-events: none;
+}
+
+#player img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
