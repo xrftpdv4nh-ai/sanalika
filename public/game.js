@@ -1,6 +1,6 @@
 const game = document.getElementById("game");
 const player = document.getElementById("player");
-const playerImg = player.querySelector("img");
+const playerBody = player.querySelector(".body");
 
 let playerX = 300;
 let playerY = 520;
@@ -19,7 +19,6 @@ setPlayerPosition();
 
 game.addEventListener("click", (e) => {
   const rect = game.getBoundingClientRect();
-
   targetX = e.clientX - rect.left;
   targetY = e.clientY - rect.top;
 });
@@ -36,10 +35,10 @@ function update() {
     playerX += moveX;
     playerY += moveY;
 
-    if (moveX > 0.2) {
-      playerImg.style.transform = "scaleX(1)";
-    } else if (moveX < -0.2) {
-      playerImg.style.transform = "scaleX(-1)";
+    if (moveX > 0.15) {
+      playerBody.style.transform = "scaleX(1)";
+    } else if (moveX < -0.15) {
+      playerBody.style.transform = "scaleX(-1)";
     }
 
     player.classList.add("walking");
