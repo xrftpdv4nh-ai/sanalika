@@ -2,8 +2,11 @@
 include(__DIR__ . '/includes/config.php');
 
 $rooms = [
-    1 => 'templates/rooms/room1.jpg',
-    2 => 'templates/rooms/room2.jpg'
+    1 => 'templates/rooms/room-lobby01.jpg',
+    2 => 'templates/rooms/room-cadde01.jpg',
+    3 => 'templates/rooms/room-kar-lobby.png',
+    4 => 'templates/rooms/room-olimpos01.png',
+    5 => 'templates/rooms/login-background.jpg'
 ];
 
 $roomId = isset($_GET['room']) ? (int) $_GET['room'] : 1;
@@ -34,6 +37,7 @@ $background = $rooms[$roomId] ?? $rooms[1];
       color: #7ec8ff;
       text-decoration: none;
       margin: 0 10px;
+      display: inline-block;
     }
 
     .room-wrap {
@@ -45,14 +49,18 @@ $background = $rooms[$roomId] ?? $rooms[1];
       height: auto;
       border-radius: 10px;
       border: 2px solid #333;
+      background: #000;
     }
   </style>
 </head>
 <body>
   <div class="topbar">
     <h2>Room Preview</h2>
-    <a href="?room=1">Room 1</a>
-    <a href="?room=2">Room 2</a>
+    <a href="?room=1">Lobby 1</a>
+    <a href="?room=2">Cadde 1</a>
+    <a href="?room=3">Kar Lobby</a>
+    <a href="?room=4">Olimpos 1</a>
+    <a href="?room=5">Login BG</a>
     <a href="index.php">الرئيسية</a>
   </div>
 
