@@ -20,7 +20,7 @@ include(__DIR__ . '/includes/config.php');
       <img id="room-bg" src="assets/room-cadde01.jpg" alt="room">
 
       <div id="player">
-        <img src="assets/avatar.png" alt="player">
+        <img src="assets/avatar_png.png" alt="player">
       </div>
     </div>
   </div>
