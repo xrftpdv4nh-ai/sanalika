@@ -5,13 +5,13 @@ include(__DIR__ . '/includes/config.php');
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title><?php echo htmlspecialchars($CONFIG['site_name']); ?> - Game</title>
   <link rel="stylesheet" href="css/game.css">
 </head>
 <body>
   <div class="topbar">
-    <div class="title">جادة 1 - تجربة أولية</div>
+    <div class="title">جادة 1</div>
     <a class="back-link" href="index.php">رجوع</a>
   </div>
 
@@ -22,7 +22,7 @@ include(__DIR__ . '/includes/config.php');
       <div id="player-shadow"></div>
 
       <div id="player" data-dir="down">
-        <img id="player-sprite" src="assets/avatar_png.png" alt="player">
+        <img id="player-sprite" src="assets/base.png" alt="player">
       </div>
     </div>
   </div>
