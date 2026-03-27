@@ -17,7 +17,7 @@ include(__DIR__ . '/includes/config.php');
 
   <div id="game-wrap">
     <div id="game-world">
-      <img id="room-bg" src="assets/room-cadde01.jpg" alt="room">
+      <img id="room-bg" src="assets/1.png" alt="room">
 
       <div id="player-shadow"></div>
 
