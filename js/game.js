@@ -13,14 +13,14 @@ let playerY = 370;
 let targetX = playerX;
 let targetY = playerY;
 
-const speed = 2.15;
+const speed = 1.85;
 
 function updateBounds() {
   bgWidth = roomBg.clientWidth;
   bgHeight = roomBg.clientHeight;
 
-  if (playerX > bgWidth) playerX = bgWidth * 0.5;
-  if (playerY > bgHeight) playerY = bgHeight * 0.5;
+  if (playerX > bgWidth) playerX = bgWidth * 0.45;
+  if (playerY > bgHeight) playerY = bgHeight * 0.53;
 
   setPlayerPosition();
 }
@@ -33,46 +33,53 @@ function setPlayerPosition() {
   shadow.style.top = `${playerY - 4}px`;
 }
 
+function setSprite(direction) {
+  player.dataset.dir = direction;
+
+  if (direction === "front") {
+    playerSprite.src = "assets/base-front.png";
+  } else if (direction === "back") {
+    playerSprite.src = "assets/base-back.png";
+  } else if (direction === "right") {
+    playerSprite.src = "assets/base-right.png";
+  } else if (direction === "left") {
+    playerSprite.src = "assets/base-left.png";
+  }
+}
+
 function setIdle() {
   player.classList.remove("walking");
   player.classList.add("idle");
 
-  shadow.style.width = window.innerWidth < 768 ? "20px" : "26px";
+  shadow.style.width = window.innerWidth < 768 ? "22px" : "28px";
   shadow.style.height = window.innerWidth < 768 ? "8px" : "10px";
-  shadow.style.opacity = "0.28";
+  shadow.style.opacity = "0.25";
 }
 
 function setWalking() {
   player.classList.remove("idle");
   player.classList.add("walking");
 
-  shadow.style.width = window.innerWidth < 768 ? "17px" : "22px";
+  shadow.style.width = window.innerWidth < 768 ? "18px" : "24px";
   shadow.style.height = window.innerWidth < 768 ? "7px" : "8px";
-  shadow.style.opacity = "0.22";
+  shadow.style.opacity = "0.2";
 }
 
 function setDirection(moveX, moveY) {
   const absX = Math.abs(moveX);
   const absY = Math.abs(moveY);
 
-  playerSprite.style.filter = "none";
-
   if (absY > absX) {
     if (moveY < 0) {
-      player.dataset.dir = "up";
-      playerSprite.style.transform = "scale(.88,1)";
-      playerSprite.style.filter = "brightness(0.88)";
+      setSprite("back");
     } else {
-      player.dataset.dir = "down";
-      playerSprite.style.transform = "scale(1)";
+      setSprite("front");
     }
   } else {
     if (moveX > 0) {
-      player.dataset.dir = "right";
-      playerSprite.style.transform = "scale(.72,1)";
+      setSprite("right");
     } else {
-      player.dataset.dir = "left";
-      playerSprite.style.transform = "scale(-.72,1)";
+      setSprite("left");
     }
   }
 }
@@ -130,6 +137,7 @@ function update() {
 window.addEventListener("load", updateBounds);
 window.addEventListener("resize", updateBounds);
 
+setSprite("front");
 setPlayerPosition();
 setIdle();
 update();
