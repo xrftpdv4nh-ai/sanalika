@@ -17,12 +17,12 @@ include(__DIR__ . '/includes/config.php');
 
   <div id="game-wrap">
     <div id="game-world">
-      <img id="room-bg" src="assets/1.png" alt="room">
+      <img id="room-bg" src="assets/room-cadde01.jpg" alt="room">
 
       <div id="player-shadow"></div>
 
-      <div id="player" data-dir="down">
-        <img id="player-sprite" src="assets/base.png" alt="player">
+      <div id="player" data-dir="front">
+        <img id="player-sprite" src="assets/base-front.png" alt="player">
       </div>
     </div>
   </div>
