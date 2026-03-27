@@ -66,11 +66,11 @@ body{
 
 #player-shadow{
   position:absolute;
-  left:44.6%;
-  top:53%;
-  width:20px;
+  left:520px;
+  top:370px;
+  width:22px;
   height:8px;
-  background:rgba(0,0,0,.28);
+  background:rgba(0,0,0,.25);
   border-radius:50%;
   transform:translate(-50%, -50%);
   filter:blur(2px);
@@ -81,10 +81,10 @@ body{
 
 #player{
   position:absolute;
-  left:44.6%;
-  top:53%;
-  width:40px;
-  height:70px;
+  left:520px;
+  top:370px;
+  width:44px;
+  height:84px;
   transform:translate(-50%, -100%);
   pointer-events:none;
   z-index:5;
@@ -96,39 +96,23 @@ body{
   object-fit:contain;
   display:block;
   transform-origin:center bottom;
-  transition:filter .08s linear;
 }
 
-#player.walking[data-dir="down"] #player-sprite{
-  animation:walkDown .22s infinite alternate ease-in-out;
-}
-
-#player.walking[data-dir="up"] #player-sprite{
-  animation:walkUp .22s infinite alternate ease-in-out;
-}
-
-#player.walking[data-dir="right"] #player-sprite,
-#player.walking[data-dir="left"] #player-sprite{
-  animation:walkSide .22s infinite alternate ease-in-out;
+#player.walking #player-sprite{
+  animation: walkBob .24s infinite alternate ease-in-out;
 }
 
 #player.idle #player-sprite{
-  animation:idleBreath 1.2s infinite ease-in-out;
+  animation: idleBreath 1.3s infinite ease-in-out;
 }
 
-@keyframes walkDown{
-  from{ transform:scale(1) translateY(0); }
-  to{ transform:scale(1,.985) translateY(-2px); }
-}
-
-@keyframes walkUp{
-  from{ transform:scale(.88,1) translateY(0); }
-  to{ transform:scale(.86,.985) translateY(-2px); }
-}
-
-@keyframes walkSide{
-  from{ transform:scale(.72,1) translateY(0); }
-  to{ transform:scale(.72,.985) translateY(-2px); }
+@keyframes walkBob{
+  from{
+    transform: translateY(0);
+  }
+  to{
+    transform: translateY(-2px);
+  }
 }
 
 @keyframes idleBreath{
@@ -139,12 +123,12 @@ body{
 
 @media (min-width: 768px){
   #player{
-    width:52px;
-    height:92px;
+    width:56px;
+    height:106px;
   }
 
   #player-shadow{
-    width:26px;
+    width:28px;
     height:10px;
   }
 
