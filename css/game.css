@@ -4,41 +4,52 @@
   padding:0;
 }
 
+html, body{
+  width:100%;
+  min-height:100%;
+}
+
 body{
   background:#111;
   color:#fff;
   font-family:Arial,sans-serif;
-  overflow:auto;
+  overflow-x:hidden;
 }
 
 .topbar{
-  height:56px;
-  padding:0 16px;
+  height:52px;
+  padding:0 12px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   background:#1a1a1a;
   border-bottom:1px solid #333;
+  position:sticky;
+  top:0;
+  z-index:20;
 }
 
 .title{
-  font-size:18px;
+  font-size:16px;
   font-weight:bold;
 }
 
 .back-link{
   color:#7ec8ff;
   text-decoration:none;
+  font-size:15px;
 }
 
 #game-wrap{
-  padding:16px;
+  width:100%;
+  padding:10px;
   overflow:auto;
 }
 
 #game-world{
   position:relative;
-  width:1166px;
+  width:100%;
+  max-width:1166px;
   margin:0 auto;
   user-select:none;
   -webkit-user-select:none;
@@ -55,28 +66,25 @@ body{
 
 #player-shadow{
   position:absolute;
-  left:520px;
-  top:370px;
-  width:34px;
-  height:12px;
+  left:44.6%;
+  top:53%;
+  width:20px;
+  height:8px;
   background:rgba(0,0,0,.28);
   border-radius:50%;
   transform:translate(-50%, -50%);
   filter:blur(2px);
   z-index:3;
   pointer-events:none;
-  transition:
-    width .12s linear,
-    height .12s linear,
-    opacity .12s linear;
+  transition:all .12s linear;
 }
 
 #player{
   position:absolute;
-  left:520px;
-  top:370px;
-  width:60px;
-  height:120px;
+  left:44.6%;
+  top:53%;
+  width:40px;
+  height:70px;
   transform:translate(-50%, -100%);
   pointer-events:none;
   z-index:5;
@@ -88,63 +96,59 @@ body{
   object-fit:contain;
   display:block;
   transform-origin:center bottom;
-}
-
-/* أثناء المشي */
-#player.walking[data-dir="side"] #player-sprite{
-  animation: walkSide 0.22s infinite alternate ease-in-out;
+  transition:filter .08s linear;
 }
 
 #player.walking[data-dir="down"] #player-sprite{
-  animation: walkDown 0.22s infinite alternate ease-in-out;
+  animation:walkDown .22s infinite alternate ease-in-out;
 }
 
 #player.walking[data-dir="up"] #player-sprite{
-  animation: walkUp 0.22s infinite alternate ease-in-out;
+  animation:walkUp .22s infinite alternate ease-in-out;
 }
 
-/* وقفة خفيفة جدًا */
-#player.idle[data-dir="side"] #player-sprite,
-#player.idle[data-dir="down"] #player-sprite,
-#player.idle[data-dir="up"] #player-sprite{
-  animation: idleBreath 1.4s infinite ease-in-out;
+#player.walking[data-dir="right"] #player-sprite,
+#player.walking[data-dir="left"] #player-sprite{
+  animation:walkSide .22s infinite alternate ease-in-out;
 }
 
-@keyframes walkSide{
-  from{
-    transform: translateY(0) rotate(-1deg) scaleY(1);
-  }
-  to{
-    transform: translateY(-3px) rotate(1deg) scaleY(0.985);
-  }
+#player.idle #player-sprite{
+  animation:idleBreath 1.2s infinite ease-in-out;
 }
 
 @keyframes walkDown{
-  from{
-    transform: translateY(0) scale(1);
-  }
-  to{
-    transform: translateY(-3px) scale(0.99);
-  }
+  from{ transform:scale(1) translateY(0); }
+  to{ transform:scale(1,.985) translateY(-2px); }
 }
 
 @keyframes walkUp{
-  from{
-    transform: translateY(0) scale(0.96);
-  }
-  to{
-    transform: translateY(-2px) scale(0.95);
-  }
+  from{ transform:scale(.88,1) translateY(0); }
+  to{ transform:scale(.86,.985) translateY(-2px); }
+}
+
+@keyframes walkSide{
+  from{ transform:scale(.72,1) translateY(0); }
+  to{ transform:scale(.72,.985) translateY(-2px); }
 }
 
 @keyframes idleBreath{
-  0%{
-    transform: translateY(0);
+  0%{ transform:translateY(0); }
+  50%{ transform:translateY(-1px); }
+  100%{ transform:translateY(0); }
+}
+
+@media (min-width: 768px){
+  #player{
+    width:52px;
+    height:92px;
   }
-  50%{
-    transform: translateY(-1px);
+
+  #player-shadow{
+    width:26px;
+    height:10px;
   }
-  100%{
-    transform: translateY(0);
+
+  .title{
+    font-size:18px;
   }
 }
