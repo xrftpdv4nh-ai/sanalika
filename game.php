@@ -22,7 +22,7 @@ include(__DIR__ . '/includes/config.php');
       <div id="player-shadow"></div>
 
       <div id="player" data-dir="down">
-        <img id="player-sprite" src="assets/avatar.png" alt="player">
+        <img id="player-sprite" src="assets/avatar_png.png" alt="player">
       </div>
     </div>
   </div>
